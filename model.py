@@ -1,4 +1,5 @@
 import tensorflow as tf
+from keras import layers, models
 import pandas as pd
 import librosa
 import librosa.util as util
@@ -137,3 +138,48 @@ print("Data is ready for training.\n")
 
 
 
+
+
+
+
+#################################################### Model Creation #################################################### 
+
+def CNN_Model(input_shape, num_classes_action, num_classes_object, num_classes_location):
+    model = models.Sequential()
+
+    # 1D Convolutional Layer: 32 filters with kernel size 3, activation 'relu', and input shape as the feature dimension
+    model.add(layers.Conv1D(32, 3, activation='relu', input_shape=input_shape))
+    model.add(layers.MaxPooling1D(2))  # Pooling layer to reduce dimensionality
+
+    # Another 1D Convolutional Layer with 64 filters
+    model.add(layers.Conv1D(64, 3, activation='relu'))
+    model.add(layers.MaxPooling1D(2))
+
+    # Another 1D Convolutional Layer with 128 filters
+    model.add(layers.Conv1D(128, 3, activation='relu'))
+    model.add(layers.MaxPooling1D(2))
+
+    # Flatten the output to feed into the dense layer
+    model.add(layers.Flatten())
+
+    # Fully connected layer for action classification
+    model.add(layers.Dense(128, activation='relu'))
+    model.add(layers.Dropout(0.5))  # Dropout to prevent overfitting
+
+    # Action classification output layer (Softmax for multi-class classification)
+    model.add(layers.Dense(num_classes_action, activation='softmax', name='action_output'))
+
+    # Object classification output layer (Softmax for multi-class classification)
+    model.add(layers.Dense(num_classes_object, activation='softmax', name='object_output'))
+
+    # Location classification output layer (Softmax for multi-class classification)
+    model.add(layers.Dense(num_classes_location, activation='softmax', name='location_output'))
+
+    # Compile the model
+    model.compile(optimizer='adam',
+                  loss={'action_output': 'sparse_categorical_crossentropy',
+                        'object_output': 'sparse_categorical_crossentropy',
+                        'location_output': 'sparse_categorical_crossentropy'},
+                  metrics=['accuracy'])
+
+    return model
