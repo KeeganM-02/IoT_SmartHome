@@ -4,7 +4,7 @@
 This project develops an IoT system that responds to pre-set voice commands and controls smart devices accordingly. The system uses an **ESP32** (or ESP32C3) microcontroller with a lightweight neural network trained to recognize commands. Commands are processed and sent to a **Firebase** database, which updates connected ESP32 devices to control lights and speakers in different rooms.
 
 ## 🚀 Features
-- 🎤 **Voice Command Recognition**: Uses a **TensorFlow Lite** model trained on speech datasets to interpret commands.
+- 🎤 **Voice Command Recognition**: Uses a **TensorFlow Lite** model trained on the Fluent Speech Commands Voice Dataset to interpret commands.
 - ⚡ **Edge AI Processing**: Runs an optimized model on an **ESP32 microcontroller** for real-time inference.
 - 📡 **Real-Time Device Control**: Updates **Firebase Realtime Database** to trigger ESP32-controlled devices.
 - 🏠 **Multi-Room Support**: Sends commands to devices in specific locations (e.g., kitchen, living room).
