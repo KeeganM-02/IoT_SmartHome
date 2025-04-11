@@ -9,6 +9,7 @@ from sklearn.preprocessing import LabelEncoder
 def load_and_preprocess_audio(file_path, sr=16000, n_mfcc=13):
     audio, _ = librosa.load(file_path, sr=sr)
     mfcc = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=n_mfcc)
+    mfcc = (mfcc - np.mean(mfcc, axis=1, keepdims=True)) / np.std(mfcc, axis=1, keepdims=True)
     delta = librosa.feature.delta(mfcc)
     delta2 = librosa.feature.delta(delta)
     features = np.vstack([mfcc, delta, delta2])
